@@ -266,6 +266,11 @@ if st.session_state.page == 'home':
                     '<a class="view-more-link" href="?view=cinematic" target="_self">View more edits &rarr;</a>',
                     unsafe_allow_html=True,
                 )
+        else:
+            st.info(
+                "No videos found. Add MP4, M4V, MOV, or WEBM files to the "
+                "`videos` folder alongside `portfolio.py`."
+            )
 
         # 2. CLIENT WORK & SERVICES
         st.markdown(f"""
@@ -379,19 +384,25 @@ elif st.session_state.page == 'cinematic_editing':
         </div>
     """, unsafe_allow_html=True)
 
-    # Render Videos Grid (2 Columns)
-    for i in range(0, len(VIDEO_EDITING_PROJECTS), 2):
-        v_col1, v_col2 = st.columns(2, gap="large")
-        cols = [v_col1, v_col2]
+    if not VIDEO_EDITING_PROJECTS:
+        st.info(
+            "No videos found. Add MP4, M4V, MOV, or WEBM files to the "
+            "`videos` folder alongside `portfolio.py`, then redeploy the app."
+        )
+    else:
+        # Render Videos Grid (2 Columns)
+        for i in range(0, len(VIDEO_EDITING_PROJECTS), 2):
+            v_col1, v_col2 = st.columns(2, gap="large")
+            cols = [v_col1, v_col2]
 
-        for idx, col in enumerate(cols):
-            p_index = i + idx
-            if p_index < len(VIDEO_EDITING_PROJECTS):
-                proj = VIDEO_EDITING_PROJECTS[p_index]
-                with col:
-                    st.video(
-                        load_video(str(proj["video_path"])),
-                        format=proj["video_format"],
-                        autoplay=True,
-                        muted=True,
-                    )
+            for idx, col in enumerate(cols):
+                p_index = i + idx
+                if p_index < len(VIDEO_EDITING_PROJECTS):
+                    proj = VIDEO_EDITING_PROJECTS[p_index]
+                    with col:
+                        st.video(
+                            load_video(str(proj["video_path"])),
+                            format=proj["video_format"],
+                            autoplay=True,
+                            muted=True,
+                        )
